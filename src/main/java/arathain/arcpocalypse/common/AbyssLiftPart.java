@@ -10,11 +10,6 @@ public class AbyssLiftPart extends AbstractEntityPart<AbyssLiftEntity> {
 	}
 
 	@Override
-	public boolean collides() {
-		return true;
-	}
-
-	@Override
 	public boolean isCollidable() {
 		return true;
 	}

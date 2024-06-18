@@ -3,8 +3,8 @@ package arathain.arcpocalypse.common;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,6 +12,7 @@ import static arathain.arcpocalypse.Arcpocalypse.MODID;
 
 public class ArcpocalypseSoundEvents {
 	private static final Map<SoundEvent, Identifier> SOUND_EVENTS = new LinkedHashMap<>();
+
 	public static final SoundEvent ENTITY_NECO_BEAM = createSoundEvent("entity.neco.beam");
 
 	public static final SoundEvent ENTITY_ARC_AMBIENT = createSoundEvent("entity.neco.arc.idle");

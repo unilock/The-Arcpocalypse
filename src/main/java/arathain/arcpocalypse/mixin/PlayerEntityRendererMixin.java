@@ -37,32 +37,29 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import virtuoel.pehkui.util.ScaleUtils;
 
 import java.util.Iterator;
 
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> implements ModelHaver {
-	//@Unique
-	//private static final Identifier TEXTURE = new Identifier(Arcpocalypse.MODID, "textures/entity/neco_ciel.png");
 	@Unique
 	private NekoArcModel MODEL;
 
 	@Unique
 	private NekoArcModel MAID_MODEL;
 
-
 	public PlayerEntityRendererMixin(EntityRendererFactory.Context context, PlayerEntityModel<AbstractClientPlayerEntity> entityModel, float f) {
 		super(context, entityModel, f);
 	}
 
+	@Unique
 	public Identifier getTexture(NekoArcComponent.TypeNeco neco) {
 		return new Identifier(Arcpocalypse.MODID, "textures/entity/" + neco.textureName + ".png");
 	}
 
 	@Override
-	public NekoArcModel getArcModel(NekoArcComponent.TypeNeco neco) {
+	public NekoArcModel arcpocalypse$getArcModel(NekoArcComponent.TypeNeco neco) {
 		return (neco.maidModel) ? MAID_MODEL : MODEL;
 	}
 
@@ -79,6 +76,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 		MODEL = new NekoArcModel(context.getPart(ArcpocalypseClient.ARC_MODEL_LAYER));
 		MAID_MODEL = new NekoArcModel(context.getPart(ArcpocalypseClient.MAIDEN_ARC_MODEL_LAYER));
 	}
+
 	@Inject(method = "renderArm", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/PlayerEntityModel;setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", shift = At.Shift.AFTER), cancellable = true)
 	private void neko$renderArm(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, ModelPart arm, ModelPart sleeve, CallbackInfo ci) {
 		if (player.getComponent(ArcpocalypseComponents.ARC_COMPONENT).isArc()) {
@@ -111,7 +109,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
 	@Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"), cancellable = true)
 	private void neko$render(AbstractClientPlayerEntity player, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo callbackInfo) {
-		if(player.getComponent(ArcpocalypseComponents.ARC_COMPONENT).isArc()) {
+		if (player.getComponent(ArcpocalypseComponents.ARC_COMPONENT).isArc()) {
 			BipedEntityModel.ArmPose armPose = getArmPose(player, Hand.MAIN_HAND);
 			BipedEntityModel.ArmPose armPose2 = getArmPose(player, Hand.OFF_HAND);
 			NekoArcModel playerEntityModel = (player.getComponent(ArcpocalypseComponents.ARC_COMPONENT).getNecoType().maidModel) ? this.MAID_MODEL : this.MODEL;
@@ -198,10 +196,10 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 			if (renderLayer != null) {
 				VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
 				int p = getOverlay(player, this.getAnimationCounter(player, tickDelta));
-				if((!playerEntityModel.eyes.visible && player.getRandom().nextFloat() > 0.90f) && !player.isSleeping() || player.isSneaking()) {
+				if ((!playerEntityModel.eyes.visible && player.getRandom().nextFloat() > 0.90f) && !player.isSleeping() || player.isSneaking()) {
 					playerEntityModel.eyes.visible = true;
 				}
-				if(((player.getRandom().nextFloat() > 0.997f && playerEntityModel.eyes.visible) || player.isSleeping()) && !player.isSneaking()) {
+				if (((player.getRandom().nextFloat() > 0.997f && playerEntityModel.eyes.visible) || player.isSleeping()) && !player.isSneaking()) {
 					playerEntityModel.eyes.visible = false;
 				}
 				playerEntityModel.render(matrixStack, vertexConsumer, light, p, 1.0F, 1.0F, 1.0F, bl2 ? 0.15F : 1.0F);
@@ -211,7 +209,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
 				while(var23.hasNext()) {
 					FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> featureRenderer = (FeatureRenderer)var23.next();
-					if(featureRenderer instanceof HeldItemFeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> || featureRenderer instanceof StuckObjectsFeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> || featureRenderer instanceof TridentRiptideFeatureRenderer<AbstractClientPlayerEntity>) {
+					if (featureRenderer instanceof HeldItemFeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> || featureRenderer instanceof StuckObjectsFeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> || featureRenderer instanceof TridentRiptideFeatureRenderer<AbstractClientPlayerEntity>) {
 						featureRenderer.render(matrixStack, vertexConsumerProvider, light, player, o, n, tickDelta, l, k, m);
 					}
 				}

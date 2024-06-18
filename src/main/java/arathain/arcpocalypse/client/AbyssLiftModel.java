@@ -5,15 +5,16 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 
 public class AbyssLiftModel extends EntityModel<AbyssLiftEntity> {
 	private final ModelPart root;
 	private final ModelPart door;
+
 	public AbyssLiftModel(ModelPart root) {
 		this.root = root.getChild("root");
 		this.door = this.root.getChild("door");
 	}
+
 	public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
@@ -24,12 +25,13 @@ public class AbyssLiftModel extends EntityModel<AbyssLiftEntity> {
 				.uv(44, 29).cuboid(-8.0F, -38.0F, -8.0F, 16.0F, 6.0F, 16.0F, new Dilation(0.0F))
 				.uv(64, 51).cuboid(-8.0F, -38.0F, -8.0F, 16.0F, 6.0F, 16.0F, new Dilation(0.5F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
-		ModelPartData door = root.addChild("door", ModelPartBuilder.create().uv(65, 0).cuboid(-11.0F, -12.0F, 0.5F, 11.0F, 26.0F, 1.0F, new Dilation(0.01F)), ModelTransform.of(5.5F, -16.0F, -8.0F, 0.0F, -0.8727F, 0.0F));
+		root.addChild("door", ModelPartBuilder.create().uv(65, 0).cuboid(-11.0F, -12.0F, 0.5F, 11.0F, 26.0F, 1.0F, new Dilation(0.01F)), ModelTransform.of(5.5F, -16.0F, -8.0F, 0.0F, -0.8727F, 0.0F));
+
 		return TexturedModelData.of(modelData, 128, 128);
 	}
 	@Override
 	public void setAngles(AbyssLiftEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if(entity.hasPassengers()) {
+		if (entity.hasPassengers()) {
 			this.door.yaw = 0;
 		} else {
 			this.door.yaw = -0.8727F;

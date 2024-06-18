@@ -13,7 +13,7 @@ public class AbyssLiftItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		if(context.getSide() == Direction.DOWN && !context.getWorld().isClient) {
+		if (context.getSide() == Direction.DOWN && !context.getWorld().isClient) {
 			AbyssLiftEntity entity = new AbyssLiftEntity(context.getWorld());
 			entity.setPosition(Vec3d.ofBottomCenter(context.getBlockPos()).add(0, -3, 0));
 			entity.setTargetPos(context.getBlockPos());
@@ -27,6 +27,7 @@ public class AbyssLiftItem extends Item {
 			context.getStack().decrement(1);
 			return ActionResult.SUCCESS;
 		}
+
 		return super.useOnBlock(context);
 	}
 }

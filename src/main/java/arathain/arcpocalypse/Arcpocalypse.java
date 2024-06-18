@@ -1,21 +1,19 @@
 package arathain.arcpocalypse;
 
-import arathain.arcpocalypse.common.*;
+import arathain.arcpocalypse.common.ArcpocalypseEntities;
+import arathain.arcpocalypse.common.ArcpocalypseItems;
+import arathain.arcpocalypse.common.ArcpocalypseSoundEvents;
+import arathain.arcpocalypse.common.Necommand;
+import arathain.arcpocalypse.common.NekoArcScaleType;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.item.Items;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
@@ -48,7 +46,7 @@ public class Arcpocalypse implements ModInitializer {
 		EntityElytraEvents.CUSTOM.register((entity, tickElytra) -> entity instanceof PlayerEntity && entity.getComponent(ArcpocalypseComponents.ARC_COMPONENT).isArc());
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS_AND_UTILITIES).register(content -> {
 			content.addItem(ArcpocalypseItems.ABYSS_LIFT);
-			content.addItem(ArcpocalypseItems.FUNNY_MARBLE);
+			content.addItem(ArcpocalypseItems.TRUE_ANCESTOR_MARBLE);
 			content.addItem(ArcpocalypseItems.NOT_A_CROSS);
 			content.addItem(ArcpocalypseItems.CRIMSON_GEM);
 			content.addItem(ArcpocalypseItems.HYPNOTIC_STOPWATCH);
@@ -56,6 +54,7 @@ public class Arcpocalypse implements ModInitializer {
 		});
 		ArcpocalypseNetworking.serverSync();
 	}
+
 	public static EntityHitResult hitscanEntity(World world, LivingEntity user, double distance, Predicate<Entity> targetPredicate){
 		Vec3d vec3d = user.getCameraPosVec(1);
 		Vec3d vec3d2 = user.getRotationVec(1);
@@ -63,6 +62,7 @@ public class Arcpocalypse implements ModInitializer {
 		double squareDistance = Math.pow(distance, 2);
 		return ProjectileUtil.getEntityCollision(world, user, vec3d, vec3d3, user.getBoundingBox().stretch(vec3d2.multiply(squareDistance)).expand(1.0D, 1.0D, 1.0D), targetPredicate);
 	}
+
 	public static BlockHitResult hitscanBlock(World world, LivingEntity user, double distance, RaycastContext.FluidHandling fluidHandling, Predicate<Block> targetPredicate){
 		Vec3d vec3d = user.getCameraPosVec(1);
 		Vec3d vec3d2 = user.getRotationVec(1);
@@ -71,6 +71,4 @@ public class Arcpocalypse implements ModInitializer {
 		vec3d3.multiply(squareDistance);
 		return world.raycast(new RaycastContext(vec3d, vec3d3, RaycastContext.ShapeType.OUTLINE, fluidHandling, user));
 	}
-
-
 }

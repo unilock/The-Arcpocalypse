@@ -12,7 +12,6 @@ public class ArcpocalypseConfig extends MidnightConfig {
 	@Entry(category = "neco_abilities") public static ArcAbilitySettings boomboom = ArcAbilitySettings.ENABLED;
 	@Entry(category = "neco_abilities") public static ArcAbilitySettings lasertime = ArcAbilitySettings.ENABLED;
 
-
 	private static NetworkSyncableConfig serverConfig = null;
 
 	public static NetworkSyncableConfig getCurrentNetworkSyncableConfig() {
@@ -21,7 +20,6 @@ public class ArcpocalypseConfig extends MidnightConfig {
 		}
 		return new NetworkSyncableConfig(boomboom, lasertime);
 	}
-
 
 	public static void setServerConfig(NetworkSyncableConfig config) {
 		serverConfig = config;
@@ -34,6 +32,7 @@ public class ArcpocalypseConfig extends MidnightConfig {
 		DISABLED("disabled");
 
 		public final String id;
+
 		ArcAbilitySettings(String id) {
 			this.id = id;
 		}

@@ -2,28 +2,24 @@ package arathain.arcpocalypse;
 
 import arathain.arcpocalypse.common.ArcpocalypseSoundEvents;
 import arathain.arcpocalypse.common.NekoArcComponent;
-import net.fabricmc.api.EnvType;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.ServerPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.*;
-import team.lodestar.lodestone.helpers.NBTHelper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
+import static arathain.arcpocalypse.Arcpocalypse.MODID;
+
 public class ArcpocalypseNetworking {
-	public static Identifier S2C_CONFIG_SYNC_PACKET = new Identifier("arcpocalypse", "s2c_config_sync");
+	public static final Identifier C2S_BURENYA_PACKET = new Identifier(MODID, "c2s_burenya");
+	public static final Identifier S2C_BURENYA_PACKET = new Identifier(MODID, "s2c_burenya");
+	public static final Identifier S2C_CONFIG_SYNC_PACKET = new Identifier(MODID, "s2c_config_sync");
 
 	public static void clientSync() {
 		ClientPlayNetworking.registerGlobalReceiver(S2C_CONFIG_SYNC_PACKET, (client, handler, buf, responseSender) -> {
@@ -35,7 +31,7 @@ public class ArcpocalypseNetworking {
 			ArcpocalypseConfig.setServerConfig(null);
 		}));
 
-		ClientPlayNetworking.registerGlobalReceiver(new Identifier("arcpocalypse", "burenya_packet_s2c"), (client, handler, buf, responseSender) -> {
+		ClientPlayNetworking.registerGlobalReceiver(S2C_BURENYA_PACKET, (client, handler, buf, responseSender) -> {
 			ArcSoundEmitterPacket thePacket = ArcSoundEmitterPacket.read(buf);
 
 			client.execute(() -> {
@@ -59,9 +55,9 @@ public class ArcpocalypseNetworking {
 		});
 
 		// It needs to go through server packet weirdness
-		ServerPlayNetworking.registerGlobalReceiver(new Identifier("arcpocalypse", "burenya_packet_c2s"), ((server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(C2S_BURENYA_PACKET, ((server, player, handler, buf, responseSender) -> {
 			PacketByteBuf realBufEnergy = PacketByteBufs.copy(buf);
-			server.execute(() -> ServerPlayNetworking.send(server.getOverworld().getPlayers(), new Identifier("arcpocalypse", "burenya_packet_s2c"), realBufEnergy));
+			server.execute(() -> ServerPlayNetworking.send(server.getOverworld().getPlayers(), S2C_BURENYA_PACKET, realBufEnergy));
 		}));
 	 }
 
@@ -70,7 +66,6 @@ public class ArcpocalypseNetworking {
 		public UUID player;
 		public Vec3d pos;
 		public boolean isTaunting;
-
 		public String arcType;
 
 		public ArcSoundEmitterPacket(UUID player, Vec3d pos, boolean isTaunting, String arcType) {
@@ -78,10 +73,6 @@ public class ArcpocalypseNetworking {
 			this.pos = pos;
 			this.isTaunting = isTaunting;
 			this.arcType = arcType;
-		}
-
-		public ArcSoundEmitterPacket(PlayerEntity player, Vec3d pos, boolean isTaunting, String arcType) {
-			this(player.getUuid(), pos, isTaunting, arcType);
 		}
 
 		public void write(PacketByteBuf buf) {

@@ -1,14 +1,11 @@
 package arathain.arcpocalypse.common;
 
-import arathain.arcpocalypse.Arcpocalypse;
 import arathain.arcpocalypse.ArcpocalypseComponents;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import virtuoel.pehkui.api.ScaleData;
-
-import java.util.Objects;
 
 public class NekoArcComponent implements AutoSyncedComponent {
 	public static final float ARC_WIDTH = 0.6f / EntityType.PLAYER.getWidth();
@@ -26,6 +23,7 @@ public class NekoArcComponent implements AutoSyncedComponent {
 	public boolean isArc() {
 		return arc;
 	}
+
 	public static void scaleDown(PlayerEntity player) {
 		ScaleData width = NekoArcScaleType.MODIFY_WIDTH_TYPE.getScaleData(player);
 		ScaleData height = NekoArcScaleType.MODIFY_HEIGHT_TYPE.getScaleData(player);
@@ -37,7 +35,7 @@ public class NekoArcComponent implements AutoSyncedComponent {
 		boolean shouldSync = arc != this.arc;
 		boolean formerArcButMaybeItWorksProperlyPlease = this.arc;
 		this.arc = arc;
-		if(arc && !formerArcButMaybeItWorksProperlyPlease) {
+		if (arc && !formerArcButMaybeItWorksProperlyPlease) {
 			scaleDown(obj);
 		} else if (!arc) {
 			ScaleData width = NekoArcScaleType.MODIFY_WIDTH_TYPE.getScaleData(obj);
@@ -45,8 +43,9 @@ public class NekoArcComponent implements AutoSyncedComponent {
 			width.setScale(1);
 			height.setScale(1);
 		}
-		if (shouldSync)
+		if (shouldSync) {
 			obj.syncComponent(ArcpocalypseComponents.ARC_COMPONENT);
+		}
 	}
 
 	@Override
@@ -75,9 +74,9 @@ public class NekoArcComponent implements AutoSyncedComponent {
 	public enum TypeNeco {
 		ARC("neko_arc", false),
 		CIEL("neco_ciel", false),
-		AKIHA("neco_akiha",  false),
-		HISUI("neco_hisui",  true),
-		KOHAKU("neco_kohaku",  true);
+		AKIHA("neco_akiha", false),
+		HISUI("neco_hisui", true),
+		KOHAKU("neco_kohaku", true);
 
 		public final String textureName;
 		public final boolean maidModel;

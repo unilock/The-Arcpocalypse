@@ -3,5 +3,5 @@ package arathain.arcpocalypse.client;
 import arathain.arcpocalypse.common.NekoArcComponent;
 
 public interface ModelHaver {
-	NekoArcModel getArcModel(NekoArcComponent.TypeNeco neco);
+	NekoArcModel arcpocalypse$getArcModel(NekoArcComponent.TypeNeco neco);
 }

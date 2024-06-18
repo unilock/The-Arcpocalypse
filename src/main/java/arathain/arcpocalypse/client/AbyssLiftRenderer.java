@@ -7,24 +7,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.ArrowEntityRenderer;
-import net.minecraft.client.render.entity.BoatEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class AbyssLiftRenderer extends EntityRenderer<AbyssLiftEntity> {
 	private static final Identifier TEXTURE = new Identifier(Arcpocalypse.MODID, "textures/entity/abyss_lift.png");
 	private static final Identifier CHAIN_TEXTURE = new Identifier(Arcpocalypse.MODID, "textures/entity/lift_chain.png");
 	public AbyssLiftModel model;
-	private Vector3f pos_x = new Vector3f(1, 0, 0);
 
 	public AbyssLiftRenderer(EntityRendererFactory.Context context) {
 		super(context);
@@ -54,12 +48,12 @@ public class AbyssLiftRenderer extends EntityRenderer<AbyssLiftEntity> {
 		float distanceZ = (float) (vec.z - entity.getZ());
 		stack.translate(0, 1.0, 0);
 
-		renderChain(distanceX, distanceY, distanceZ, tickDelta, entity.age, stack, vertexConsumers, light);
+		renderChain(distanceX, distanceY, distanceZ, stack, vertexConsumers, light);
 		stack.pop();
 		super.render(entity, yaw, tickDelta, stack, vertexConsumers, light);
 	}
-	public void renderChain(float x, float y, float z, float tickDelta, int age, MatrixStack stack, VertexConsumerProvider provider, int light)
-	{
+
+	public void renderChain(float x, float y, float z, MatrixStack stack, VertexConsumerProvider provider, int light) {
 		float lengthXY = MathHelper.sqrt(x * x + z * z);
 		float squaredLength = x * x + y * y + z * z;
 		float length = MathHelper.sqrt(squaredLength);
