@@ -32,14 +32,14 @@ public abstract class HeldItemFeatureRendererMixin<T extends LivingEntity, M ext
 	private HeldItemRenderer heldItemRenderer;
 
 	@Unique
-	private FeatureRendererContext<T, M> ctx;
+	private FeatureRendererContext ctx;
 
 	public HeldItemFeatureRendererMixin(FeatureRendererContext<T, M> featureRendererContext) {
 		super(featureRendererContext);
 	}
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	private void neko$init(FeatureRendererContext<T, M> featureRendererContext, HeldItemRenderer heldItemRenderer, CallbackInfo ci) {
+	private void neko$init(FeatureRendererContext featureRendererContext, HeldItemRenderer heldItemRenderer, CallbackInfo ci) {
 		ctx = featureRendererContext;
 	}
 
